@@ -1,20 +1,18 @@
+import os
 from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
 todos = []
 
-# 1. Health check эндпоинт
 @app.route('/health', methods=['GET'])
 def health_check():
     return jsonify({"status": "ok"}), 200
 
-# 2. Получение списка задач
 @app.route('/todos', methods=['GET'])
 def get_todos():
     return jsonify(todos), 200
 
-# 3. Создание новой задачи
 @app.route('/todos', methods=['POST'])
 def create_todo():
     data = request.get_json()
