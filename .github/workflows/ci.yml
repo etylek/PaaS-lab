@@ -1,4 +1,4 @@
-name: CI
+name: CI/CD Pipeline
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 jobs:
-  test:
+  test-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -26,3 +26,8 @@ jobs:
 
     - name: Run tests
       run: pytest
+
+    - name: Trigger Render Deploy (Only if CI is green and branch is main)
+      if: success() && github.ref == 'refs/heads/main'
+      run: |
+        curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
